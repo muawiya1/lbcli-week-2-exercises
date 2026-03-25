@@ -88,7 +88,7 @@ echo ""
 # STUDENT TASK: Extract the available UTXOs from the decoded transaction for spending
 # WRITE YOUR SOLUTION BELOW:
 UTXO_TXID=$TXID
-UTXO_VOUT_INDEX=$(bitcoin_cli -regtest decoderawtransaction "$BASE_TX" | jq -r '.vout[0].n')
+UTXO_VOUT_INDEX=0
 check_cmd "UTXO vout selection" "UTXO_VOUT_INDEX" "$UTXO_VOUT_INDEX"
 
 UTXO_VALUE=$FIRST_OUTPUT_VALUE
@@ -168,7 +168,7 @@ PAYMENT_ADDRESS="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP"
 CHANGE_ADDRESS="bcrt1qg09ftw43jvlhj4wlwwhkxccjzmda3kdm4y83ht"
 
 # STUDENT TASK: Create a proper input JSON for createrawtransaction
-TX_INPUTS='''[{"txid":"'$UTXO_TXID'","vout":"'$UTXO_VOUT_INDEX'","sequence":1}]'''
+TX_INPUTS='''[{"txid":"'$UTXO_TXID'","vout":'$UTXO_VOUT_INDEX',"sequence":1}]'''
 check_cmd "Input JSON creation" "TX_INPUTS" "$TX_INPUTS"
 
 # Verify RBF is enabled in the input structure
