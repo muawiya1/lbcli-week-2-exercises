@@ -10,4 +10,4 @@ utxo_txid=$(bitcoin-cli -regtest decoderawtransaction "$raw_tx" | jq -r '.txid')
 utxo_vout_1=$(bitcoin-cli -regtest decoderawtransaction "$raw_tx" | jq -r '.vout[0].n')
 utxo_vout_2=$(bitcoin-cli -regtest decoderawtransaction "$raw_tx" | jq -r '.vout[1].n')
 
-bitcoin-cli -regtest createrawtransaction '''[{"txid":"'$utxo_txid'","vout":'$utxo_vout_1', "sequence": 1 },{"txid":"'$utxo_txid'","vout":'$utxo_vout_2', "sequence": 1}]''' '''{"'2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP'":0.2, "'$changeaddress'":0.03659108}'''
+bitcoin-cli -regtest createrawtransaction '''[{"txid":"'$utxo_txid'","vout":'$utxo_vout_1', "sequence": 1 },{"txid":"'$utxo_txid'","vout":'$utxo_vout_2', "sequence": 1}]''' '''{"'2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP'":0.2}'''
