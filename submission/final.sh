@@ -215,7 +215,7 @@ check_cmd "Transaction decoding" "DECODED_TX" "$DECODED_TX"
 
 # STUDENT TASK: Extract and verify the key components from the decoded transaction
 # WRITE YOUR SOLUTION BELOW:
-VERIFY_RBF=$(echo "$DECODED_TX" | jq -r 'if .vin[0].sequence < 4294967294 then "true" else "false"' )
+VERIFY_RBF=$(echo "$DECODED_TX" | jq -r 'if .vin[0].sequence < 4294967294 then "true" else "false" end')
 check_cmd "RBF verification" "VERIFY_RBF" "$VERIFY_RBF"
 
 VERIFY_PAYMENT=$(echo "$DECODED_TX" | jq -r '.vout[] | select(.scriptPubKey.address == "2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP") | .value)')
