@@ -59,7 +59,7 @@ echo "Transaction ID: $TXID"
 NUM_INPUTS=$(bitcoin-cli -regtest decoderawtransaction "$BASE_TX" | jq -r '.vin | length')
 check_cmd "Input counting" "NUM_INPUTS" "$NUM_INPUTS"
 
-NUM_OUTPUTS=$(bitcoin-cli -regtest decoderawtransaction "$BASE_TX" | jq -r 'vout | lenght')
+NUM_OUTPUTS=$(bitcoin-cli -regtest decoderawtransaction "$BASE_TX" | jq -r '.vout | lenght')
 check_cmd "Output counting" "NUM_OUTPUTS" "$NUM_OUTPUTS"
 
 echo "Number of inputs: $NUM_INPUTS"
@@ -184,11 +184,11 @@ CHANGE_AMOUNT=$((UTXO_VALUE - PAYMENT_AMOUNT - FEE_SATS))
 check_cmd "Change calculation" "CHANGE_AMOUNT" "$CHANGE_AMOUNT"
 
 # Convert amounts to BTC for createrawtransaction
-PAYMENT_BTC= $(echo "scale=8; $PAYMENT_AMOUNT / 100000000" | bc | sed 's/^\./0./')
+PAYMENT_BTC=$(echo "scale=8; $PAYMENT_AMOUNT / 100000000" | bc | sed 's/^\./0./')
 CHANGE_BTC=$(echo "scale=8; $CHANGE_AMOUNT / 100000000" | bc | sed 's/^\./0./')
 
 # STUDENT TASK: Create the outputs JSON structure
-TX_OUTPUTS='''{"'$PAYMENT_ADDRESS'":'$PAYMENT_BTC', "'$CHANGE_ADDRESS'": '$CHANGE_AMOUNT'}'''
+TX_OUTPUTS='''{"'$PAYMENT_ADDRESS'":'$PAYMENT_BTC', "'$CHANGE_ADDRESS'": '$CHANGE_BTC'}'''
 check_cmd "Output JSON creation" "TX_OUTPUTS" "$TX_OUTPUTS"
 
 # STUDENT TASK: Create the raw transaction
@@ -306,7 +306,7 @@ CHILD_TX_SIZE=$((10+1*68+1*31))
 check_cmd "Child transaction size calculation" "CHILD_TX_SIZE" "$CHILD_TX_SIZE"
 
 CHILD_FEE_RATE=20 # satoshis/vbyte
-CHILD_FEE_SATS=$((CHILD_TX_SIZE - CHILD_FEE_RATE))
+CHILD_FEE_SATS=$((CHILD_TX_SIZE * CHILD_FEE_RATE))
 check_cmd "Child fee calculation" "CHILD_FEE_SATS" "$CHILD_FEE_SATS"
 
 # Calculate the amount to send after deducting fee
